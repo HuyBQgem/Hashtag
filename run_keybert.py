@@ -31,7 +31,7 @@ def func(inpt, all_hashtags, stopword):
             top_n = 5
             top_n_mss = top_n if nr >= top_n else nr
             print('- Description: ', item)
-            for i in range(4, 6):
+            for i in range(1, 4):
                 print(f'- Hashtag length = {i}:')
                 n_gram_range = (i, i)
                 doc_embedding, candidate_embeddings, candidates = embedding(item, n_gram_range, stopword)
