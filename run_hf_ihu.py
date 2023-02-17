@@ -1,7 +1,9 @@
 import HF_IHU
 import json
 import re
+import pandas as pd
 from data_utils import *
+from evaluater import cos_true_false
 
 # # 1) dataset without hashtags, using category as hashtags
 #
@@ -62,7 +64,9 @@ train_size = int(len(corpus) * .8)
 thfm = HF_IHU.thfm(corpus[:train_size], save_name=f'{name}_thfm.json')
 hfm = HF_IHU.hfm(corpus[:train_size], save_name=f'{name}_hfm.json')
 test = corpus[train_size:]
+test_tags = [x[0] for x in test]
 
+out_tags = []
 count_true = 0
 count_false = 0
 try:
@@ -70,11 +74,13 @@ try:
         tags = test[i][0]
         hf_ihu = HF_IHU.hf_ihu(test[i][1], hfm, thfm)
         sort = HF_IHU.sort_score(hf_ihu)
+        out_tags.append(list(sort.keys())[:len(tags)+2])
         for item in tags:
             if item in list(sort.keys())[:len(tags)+2]:
                 count_true += 1
             else:
                 count_false += 1
+
         # print("Description:", test[i][1])
         print("Ground truth:", test[i][0])
         # print("Prediction:  ", list(sort.keys())[:max(5, len(tags))])
@@ -85,7 +91,8 @@ except KeyboardInterrupt:
 
 print("count true:", count_true)
 print("count false:", count_false)
-print(count_true / (count_true + count_false))
+print("precision:", count_true * 100 / (count_true + count_false))
+cos_true_false(out_tags, test_tags)
 # end 2) and 3)
 
 

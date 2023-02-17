@@ -9,6 +9,7 @@ tokenizer = TreebankWordTokenizer()
 
 
 def word_segment(corpus, split=0):
+    py_vncorenlp.download_model()
     documents = []
     for desc in corpus:
         segment = rdrsegmenter.word_segment(desc)
