@@ -36,15 +36,17 @@ def count_true_false(out_tag, test_tag):
     true = 0
     false = 0
     for index in range(len(out_tag)):
-        for item in out_tag[index]:
-            if convert(item).replace(' ', '') in test_tag[index]:
+        converted = [convert(x) for x in out_tag[index]]
+        test = test_tag[index]
+        for item in converted:
+            if item.replace(' ', '') in test:
                 true += 1
             else:
                 false += 1
 
-    print('true:', true)
-    print('false:', false)
-    print('precision', true * 100 / (true + false))
+    print('true prediction:', true)
+    print('false prediction:', false)
+    print('precision:', true / (true + false))
 
 
 def cos_true_false(out_tag, test_tag, threshold=0.5):
@@ -64,4 +66,4 @@ def cos_true_false(out_tag, test_tag, threshold=0.5):
 
     print('cosine true:', true)
     print('cosine false:', false)
-    print('precision:', true * 100 / (true + false))
+    print('precision:', true / (true + false))
